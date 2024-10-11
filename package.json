@@ -4,13 +4,17 @@
   "main": "Server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "run": "nodemon server.js"
+    "start": "node Server.js",
+    "dev": "nodemon Server.js"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
     "nodemon": "^3.1.7"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "mongoose": "^8.7.1"
   }
 }
