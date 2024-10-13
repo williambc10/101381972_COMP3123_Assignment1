@@ -12,7 +12,7 @@ routes.get("/emp/employees", (req, res) => {
     })
 })
 
-routes.post("/emp/employees", [
+routes.post("/emp/employees", [ 
     check('first_name', 'First name is required').not().isEmpty(),
     check('last_name', 'Last name is required').not().isEmpty(),
     check('email', 'Please include a valid email').isEmail()
