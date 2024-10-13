@@ -1,5 +1,6 @@
 const express = require("express")
 const userRoutes = require("./Routes/User")
+const employeeRoutes = require("./Routes/Employee")
 const mongoose = require("mongoose")
 
 const db_CONNECTION_STRING = "mongodb+srv://101381972:Cluster01%2F10%2F2001@cluster0.5vn99.mongodb.net/COMP3123_Assignment?retryWrites=true&w=majority&appName=Cluster0"
@@ -19,6 +20,7 @@ app.use(express.urlencoded())
 
 
 app.use("/api/v1", userRoutes)
+app.use("/api/v1", employeeRoutes)
 
 app.route("/")
     .get((req, res) => {

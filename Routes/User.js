@@ -1,26 +1,31 @@
 const express = require("express")
 const User = require("../Models/User")
+const { check, validationResult } = require('express-validator');
 
 const routes = express.Router()
 
 routes.get("/users", (req, res) => {
-    //gets all books from MongoDB
     User.find().then((users) => {
         res.send(users)
     }).catch((err) => {
         res.status(500).send({message: err.message})
     })
-    //res.send({message: "Get All Books"})
 })
 
-//Add NEW Book
-routes.post("/signup", async (req, res) => {
-    const userData = req.body //create a body for info because array is empty
+routes.post("/signup", [
+    check('username', 'Username is required').not().isEmpty(),
+    check('email', 'Please include a valid email').isEmail()
+    ], async (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+        
+    const userData = req.body
     console.log(userData);
     try {
-        //Create a new user instance
         const user = new User(userData)
-        //Save the new user instance to MongoDB
         const newUser = await user.save()
         res.status(201).json({
             message: 'User created successfully.',
@@ -35,7 +40,6 @@ routes.post('/login', async (req, res) => {
     const { email, password } = req.body;
     
     try {
-      // Find the user by email or username
       const user = await User.findOne({ email });
       
       if (!user) {
