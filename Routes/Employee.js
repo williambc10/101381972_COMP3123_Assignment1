@@ -18,7 +18,7 @@ routes.post("/emp/employees", [
     check('email', 'Please include a valid email').isEmail()
   ], async (req, res) => {
 
-    const errors = validationResult(req);
+    const errors = validationResult(req); //https://express-validator.github.io/docs/6.0.0/validation-result-api/
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }  
@@ -65,8 +65,10 @@ routes.post("/emp/employees/:empid", (req, res) => {
     })
 })
 
-routes.delete("/emp/employees/:empid", (req, res) => {
-    Employee.findByIdAndDelete(req.params.empid).then((employee) => {
+routes.delete("/emp/employees", (req, res) => {
+    const empId = req.query.eid;
+
+    Employee.findByIdAndDelete(empId).then((employee) => {
         if(employee) {
             res.status(204).json({
                 message: 'Employee deleted successfully.'
