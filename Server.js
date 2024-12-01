@@ -2,6 +2,8 @@ const express = require("express")
 const userRoutes = require("./Routes/User")
 const employeeRoutes = require("./Routes/Employee")
 const mongoose = require("mongoose")
+const cors = require('cors');
+require('dotenv').config();
 
 const db_CONNECTION_STRING = "mongodb+srv://101381972:Cluster01%2F10%2F2001@cluster0.5vn99.mongodb.net/COMP3123_Assignment?retryWrites=true&w=majority&appName=Cluster0"
 
@@ -12,6 +14,8 @@ mongoose.connect(db_CONNECTION_STRING).then(() => {
 })
 
 const app = express()
+
+app.use(cors());
 
 const SERVER_PORT = 3001
 

@@ -1,10 +1,11 @@
 const express = require("express")
 const Employee = require("../Models/Employee")
 const { check, validationResult } = require('express-validator');
+const authenticateToken = require('../Middleware/authenticateToken');
 
 const routes = express.Router()
 
-routes.get("/emp/employees", (req, res) => {
+routes.get("/emp/employees", authenticateToken, (req, res) => {
     Employee.find().then((employees) => {
         res.send(employees).status(200)
     }).catch((err) => {
@@ -12,7 +13,7 @@ routes.get("/emp/employees", (req, res) => {
     })
 })
 
-routes.post("/emp/employees", [ 
+routes.post("/emp/employees", [ authenticateToken,
     check('first_name', 'First name is required').not().isEmpty(),
     check('last_name', 'Last name is required').not().isEmpty(),
     check('email', 'Please include a valid email').isEmail()
@@ -37,7 +38,7 @@ routes.post("/emp/employees", [
     }
 })
 
-routes.get("/emp/employees/:empid", (req, res) => {
+routes.get("/emp/employees/:empid", authenticateToken, (req, res) => {
     Employee.findById(req.params.empid, req.body, {new: true})
     .then((employee) => {
         if(employee) {
@@ -50,7 +51,7 @@ routes.get("/emp/employees/:empid", (req, res) => {
     })
 })
 
-routes.post("/emp/employees/:empid", (req, res) => {
+routes.post("/emp/employees/:empid", authenticateToken, (req, res) => {
     Employee.findByIdAndUpdate(req.params.empid, req.body, {new: true})
     .then((employee) => {
         if(employee) {
@@ -65,7 +66,7 @@ routes.post("/emp/employees/:empid", (req, res) => {
     })
 })
 
-routes.delete("/emp/employees", (req, res) => {
+routes.delete("/emp/employees", authenticateToken, (req, res) => {
     const empId = req.query.eid;
 
     Employee.findByIdAndDelete(empId).then((employee) => {
