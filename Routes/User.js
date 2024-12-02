@@ -36,7 +36,9 @@ routes.post("/signup", [
         });
 
         await newUser.save();
-        res.status(201).json({ message: 'User created successfully.' });
+
+        const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.status(201).json({ message: 'User created successfully.', token });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
